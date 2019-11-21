@@ -30,6 +30,7 @@
     "url": "https://github.com/GasparErrobidart/scroll-direction/issues"
   },
   "devDependencies": {
+    "braces": ">=2.3.1",
     "babel-cli": "^6.0.0",
     "babel-preset-env": "^1.7.0",
     "minify": "^4.1.3",
