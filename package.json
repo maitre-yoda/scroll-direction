@@ -1,8 +1,8 @@
 {
-  "name": "scroll-direction",
-  "version": "1.0.0",
+  "name": "detect-scroll-direction",
+  "version": "1.0.1",
   "description": "Detect scroll direction",
-  "main": "index.js",
+  "main": "dist/scroll-direction.js",
   "scripts": {
     "distribution": "npm run babelify && npm run minify",
     "babelify": "babel src -d dist ",
