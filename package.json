@@ -1,6 +1,6 @@
 {
   "name": "detect-scroll-direction",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Detect scroll direction",
   "main": "dist/scroll-direction.js",
   "scripts": {
