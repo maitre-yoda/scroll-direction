@@ -14,7 +14,7 @@ var ScrollDirection = function () {
         addClassesTo = _options$addClassesTo === undefined ? 'body' : _options$addClassesTo;
 
     this.target = target;
-    this.addClassesTo = addClassesTo;
+    this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
     this.watch();
     this.last = 0;
     this.direction = '';
@@ -23,8 +23,21 @@ var ScrollDirection = function () {
   _createClass(ScrollDirection, [{
     key: 'watch',
     value: function watch() {
+      var _this = this;
+
+      var limiter = void 0;
+      var limitCount = 0;
       this.listener = this.detectDirection.bind(this);
-      this.target.addEventListener('scroll', this.listener);
+      this.target.addEventListener('scroll', function () {
+        if (limitCount < 10) {
+          clearTimeout(limiter);
+          limitCount++;
+        }
+        limiter = setTimeout(function () {
+          limitCount = 0;
+          _this.listener();
+        }, 10);
+      });
     }
   }, {
     key: 'stop',
@@ -35,14 +48,16 @@ var ScrollDirection = function () {
     key: 'addClasses',
     value: function addClasses() {
       if (this.addClassesTo && this.direction) {
-        var el = document.querySelector(this.addClassesTo);
-        el.classList.add('scroll-direction-' + this.direction);
-        el.classList.remove('scroll-direction-' + (this.direction == 'down' ? 'up' : 'down'));
+        var el = this.addClassesTo;
+        var right = this.direction;
+        var wrong = right == 'down' ? 'up' : 'down';
+        el.className = el.className.replace('scroll-direction-' + wrong, '') + 'scroll-direction-' + right;
       }
     }
   }, {
     key: 'onDirectionChange',
     value: function onDirectionChange() {
+      console.log("Change found");
       this.addClasses();
       this.target.dispatchEvent(new CustomEvent('scrollDirectionChange', { detail: this }));
     }
@@ -51,6 +66,7 @@ var ScrollDirection = function () {
     value: function detectDirection(event) {
       var scrolled = this.target.scrollY || this.target.scrollTop;
       var newDirection = scrolled > this.last ? 'down' : 'up';
+      console.log("Detecting changes...", scrolled);
       if (this.direction != newDirection) {
         this.direction = newDirection;
         this.onDirectionChange();
