@@ -36,7 +36,7 @@ class ScrollDirection{
       const el = this.addClassesTo
       const right = this.direction
       const wrong = right == 'down' ? 'up' : 'down'
-      el.className = el.className.replace('scroll-direction-'+wrong, '') + 'scroll-direction-'+right
+      el.className = el.className.replace('scroll-direction-'+wrong, '') + ' scroll-direction-'+right
     }
   }
 

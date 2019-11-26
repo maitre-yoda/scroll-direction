@@ -51,7 +51,7 @@ var ScrollDirection = function () {
         var el = this.addClassesTo;
         var right = this.direction;
         var wrong = right == 'down' ? 'up' : 'down';
-        el.className = el.className.replace('scroll-direction-' + wrong, '') + 'scroll-direction-' + right;
+        el.className = el.className.replace('scroll-direction-' + wrong, '') + ' scroll-direction-' + right;
       }
     }
   }, {
