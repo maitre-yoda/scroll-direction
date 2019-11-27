@@ -15,9 +15,10 @@ var ScrollDirection = function () {
 
     this.target = target;
     this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
-    this.watch();
     this.last = 0;
     this.direction = 'down';
+    this.addClasses();
+    this.watch();
   }
 
   _createClass(ScrollDirection, [{
