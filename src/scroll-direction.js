@@ -6,7 +6,7 @@ class ScrollDirection{
     this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
     this.watch()
     this.last = 0
-    this.direction = ''
+    this.direction = 'down'
   }
 
   watch(){
@@ -36,7 +36,7 @@ class ScrollDirection{
       const el = this.addClassesTo
       const right = this.direction
       const wrong = right == 'down' ? 'up' : 'down'
-      el.className = el.className.replace('scroll-direction-'+wrong, '') + ' scroll-direction-'+right
+      el.className = el.className.replace('scroll-direction-'+wrong, '').replace('\s\s',' ') + ' scroll-direction-'+right
     }
   }
 

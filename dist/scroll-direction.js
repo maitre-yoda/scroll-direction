@@ -17,7 +17,7 @@ var ScrollDirection = function () {
     this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
     this.watch();
     this.last = 0;
-    this.direction = '';
+    this.direction = 'down';
   }
 
   _createClass(ScrollDirection, [{
@@ -51,7 +51,7 @@ var ScrollDirection = function () {
         var el = this.addClassesTo;
         var right = this.direction;
         var wrong = right == 'down' ? 'up' : 'down';
-        el.className = el.className.replace('scroll-direction-' + wrong, '') + ' scroll-direction-' + right;
+        el.className = el.className.replace('scroll-direction-' + wrong, '').replace('\s\s', ' ') + ' scroll-direction-' + right;
       }
     }
   }, {
