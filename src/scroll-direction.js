@@ -5,8 +5,7 @@ class ScrollDirection{
     this.target = target
     this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
     this.last = 0
-    this.direction = 'down'
-    this.addClasses()
+    this.direction = ''
     this.watch()
   }
 
@@ -37,12 +36,11 @@ class ScrollDirection{
       const el = this.addClassesTo
       const right = this.direction
       const wrong = right == 'down' ? 'up' : 'down'
-      el.className = el.className.replace('scroll-direction-'+wrong, '').replace('\s\s',' ') + ' scroll-direction-'+right
+      el.className = el.className.replace('scroll-direction-'+wrong, '').replace(/\s\s/gi,' ') + ' scroll-direction-'+right
     }
   }
 
   onDirectionChange(){
-    console.log("Change found")
     this.addClasses()
     this.target.dispatchEvent(new CustomEvent('scrollDirectionChange',{ detail : this }))
   }
@@ -50,7 +48,6 @@ class ScrollDirection{
   detectDirection(event){
     const scrolled      = this.target.scrollY || this.target.scrollTop
     const newDirection  = (scrolled > this.last) ? 'down' : 'up'
-    console.log("Detecting changes..." , scrolled)
     if(this.direction   != newDirection){
       this.direction    = newDirection
       this.onDirectionChange()
