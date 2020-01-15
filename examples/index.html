@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Basic example</title>
+  <style>
+    .msg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .msg__up,
+    .msg__down { display: none; }
+
+    .scroll-direction-up .msg__up,
+    .scroll-direction-down .msg__down { display: block; }
+  </style>
+</head>
+<body>
+  <div style="display: block; width: 50px; height: 200vh; background: linear-gradient(to bottom, #00f260, #0575e6);"></div>
+  <div class="msg">
+    <div class="msg__up">Up</div>
+    <div class="msg__down">Down</div>
+  </div>
+  <script src="../dist/scroll-direction.js"></script>
+  <script>
+    var scrollDirection = new ScrollDirection();
+  </script>
+</body>
+</html>

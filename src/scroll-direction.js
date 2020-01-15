@@ -1,58 +1,76 @@
-class ScrollDirection{
+import { throttle } from 'throttle-debounce';
 
-  constructor(options){
-    const { target = window , addClassesTo = 'body' } = options
-    this.target = target
-    this.addClassesTo = addClassesTo ? document.querySelector(addClassesTo) : addClassesTo;
-    this.last = 0
-    this.direction = ''
-    this.watch()
+class ScrollDirection {
+  constructor(options) {
+    this.originalOptions = {
+      target: window,
+      addClassesTo: 'body',
+      throttle: 10
+    };
+
+    this.options = Object.assign({}, this.originalOptions, options);
+
+    if (typeof this.options.addClassesTo === 'string') { // String
+      this.addClassesTo = document.querySelector(this.options.addClassesTo);
+    } else if (this.options.addClassesTo.jquery) { // jQuery
+      this.addClassesTo = this.options.addClassesTo[0];
+    } else { // HTML element
+      this.addClassesTo = this.options.addClassesTo;
+    } 
+
+    this.last = 0;
+    this.direction = '';
+    this.watch();
   }
 
-  watch(){
-    let limiter
-    let limitCount = 0
-    this.listener = this.detectDirection.bind(this)
-    this.target.addEventListener('scroll',()=>{
-      if(limitCount < 10){
-        clearTimeout(limiter)
-        limitCount++
-      }
-      limiter = setTimeout(()=>{
-        limitCount = 0
-        this.listener()
-      },10)
+  watch() {
+    this.listener = this.detectDirection.bind(this);
 
-
-    })
+    this.options.target.addEventListener('scroll', throttle(this.options.throttle, () => this.listener()));
   }
 
-  stop(){
-    this.target.removeEventListener('scroll',this.listener)
+  stop() {
+    this.options.target.removeEventListener('scroll', this.listener)
   }
 
   addClasses(){
-    if(this.addClassesTo && this.direction){
-      const el = this.addClassesTo
-      const right = this.direction
-      const wrong = right == 'down' ? 'up' : 'down'
-      el.className = el.className.replace('scroll-direction-'+wrong, '').replace(/\s\s/gi,' ') + ' scroll-direction-'+right
+    if(this.addClassesTo && this.direction) {
+      if(this.direction === 'up') {
+        this.addClassesTo.classList.add('scroll-direction-up');
+        this.addClassesTo.classList.remove('scroll-direction-down');
+      } else {
+        this.addClassesTo.classList.add('scroll-direction-down');
+        this.addClassesTo.classList.remove('scroll-direction-up');
+      }
     }
   }
 
-  onDirectionChange(){
-    this.addClasses()
-    this.target.dispatchEvent(new CustomEvent('scrollDirectionChange',{ detail : this }))
+  onDirectionChange() {
+    this.addClasses();
+    this.options.target.dispatchEvent(new CustomEvent('scrollDirectionChange', { detail : this }));
   }
 
-  detectDirection(event){
-    const scrolled      = this.target.scrollY || this.target.scrollTop
-    const newDirection  = (scrolled > this.last) ? 'down' : 'up'
-    if(this.direction   != newDirection){
-      this.direction    = newDirection
-      this.onDirectionChange()
+  detectDirection() {
+    const scrolled = this.options.target.scrollY || this.options.target.scrollTop;
+    const newDirection = (scrolled > this.last) ? 'down' : 'up';
+    if(this.direction != newDirection) {
+      this.direction = newDirection;
+      this.onDirectionChange();
     }
-    this.last           = scrolled
+    this.last = scrolled;
   }
+}
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports = {
+    ScrollDirection
+  };
+} else {
+  if (typeof define === 'function' && define.amd) {
+    define([], () => {
+      return ScrollDirection;
+    });
+  } else {
+    window.ScrollDirection = ScrollDirection;
+  }
 }

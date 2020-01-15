@@ -31,7 +31,7 @@ window.addEventListener('scrollDirectionChange',function(ev){
 #### target
 
 Type : `Element`  
-Default : `window`  
+Default : `window` 
 
 #### addClasses
 
@@ -39,3 +39,8 @@ Type : `String` or Falsy value `Boolean`
 Default : `body`  
 
 By default `scroll-direction-up` and `scroll-direction-down` will be added to the class list of the body. You can provide a different selector or a falsy value like `''` or just `false`.
+
+#### throttle
+
+Type : `Int`
+Default : 10
